@@ -16,9 +16,7 @@
 @endsection
 @section('content')
     @include('admin.includes.message')
- 
-    
-    <div class="content-wrapper">
+        <div class="content-wrapper">
             <h3 class="page-title text-center">News Table</h3><hr>
             <div class="card">
               <div class="card-body">

@@ -20,8 +20,6 @@ class RepliedToProduct extends Notification
     public function __construct($news)
     {
         $this->news=$news;
-       
-
     }
 
     /**
@@ -35,7 +33,6 @@ class RepliedToProduct extends Notification
         return ['database'];
     }
 
-     
     /**
      * Get the array representation of the notification.
      *
@@ -44,14 +41,11 @@ class RepliedToProduct extends Notification
      */
     public function toDatabase($notifiable)
     {
-        
         return [
          'news'=> $this->news,
          'user'=>auth()->user()
         ];
     }
-
-
 
     /**
      * Get the array representation of the notification.

@@ -1,4 +1,7 @@
-
+		@php       
+		use App\Model\News;
+	        $recent_news=News::orderBy('id','desc')->limit(5)->get();    
+        @endphp
 			    <div class="col-md-12" style="margin-bottom:-100px;margin-top:-50px">
 				    <div class="gnSlider gn-animation" data-animation="fadeInUp" data-animation-delay="0" data-animation-offset="75%">
 				        <div class="flex-container">

@@ -15,9 +15,10 @@
 </ol>
 @endsection
 @section('content')
-    @include('admin.includes.message')  
+    
     <div class="content-wrapper">
             <h3 class="page-title text-center">Comments Table</h3><br>
+            @include('admin.includes.message')  
             <div class="card">
               <div class="card-body">
                 <div class="row">
@@ -30,7 +31,6 @@
                             <th>Comment</th>
                             <th>User</th>
                             @if(Auth::guard('admin'))
-                            <th>Update</th>
                             <th>Delete</th>
                         @endif
                             
@@ -45,7 +45,7 @@
                             <td>{{str_limit($comment->body,50)}}</td>
                             <td>{{$comment->user->name}}</td>
                             @if(Auth::guard('admin'))
-                            <td> <a href="{{route('admin-comment.edit',$comment->id)}}"><span style="color:green"><i class="fas fa-pencil-alt"></i></i></span></a></td>
+                            <td> <a href="{{route('admin-comment.edit',$comment->id)}}">
                             <td><a href="{{route('admin-comment.delete',$comment->id)}}" id="delete"><span style="color:#DD4F43"><i class="fas fa-trash-alt"></i></span></a></td>
                         @endif                            
                         </tr>

@@ -15,7 +15,7 @@
 </ol>
 @endsection
 @section('content')
-    @include('admin.includes.message')
+    @include('super-admin.includes.message')
     <div class="row">
         <div class="col-md-12">
             <div class="content-wrap well text-center">

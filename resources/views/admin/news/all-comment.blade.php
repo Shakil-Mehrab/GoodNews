@@ -29,7 +29,6 @@
                             <th>Product Name</th>
                             <th>Comment</th>
                             <th>User</th>
-                            <th>Update</th>
                             <th>Delete</th>
                             
                         </tr>
@@ -42,7 +41,6 @@
                             <td>{{$comment->news->name}}</td>
                             <td>{{str_limit($comment->body,50)}}</td>
                             <td>{{$comment->user->name}}</td>
-                            <td> <a href="{{route('comment.edit',$comment->id)}}"><span style="color:green"><i class="fas fa-pencil-alt"></i></i></span></a></td>
                             <td><a href="{{route('comment.delete',$comment->id)}}" id="delete"><span style="color:#DD4F43"><i class="fas fa-trash-alt"></i></span></a></td>
                             
                         </tr>

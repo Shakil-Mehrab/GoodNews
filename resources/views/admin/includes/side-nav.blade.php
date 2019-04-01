@@ -1,8 +1,8 @@
 @php
-use App\News;
-use App\Category;
-use App\Comment;
-use App\Reply;
+use App\Model\News;
+use App\Model\Category;
+use App\Model\Comment;
+use App\Model\Reply;
 use App\User;
 
 $total_news=News::all()->count('id');

@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Notifications\AdminResetPasswordNotification;
+use App\Model\Like;
+use App\Model\Comment;
+use App\Model\Reply;
 
 class Admin extends Authenticatable
 {
@@ -34,11 +37,11 @@ class Admin extends Authenticatable
     }
     
     public function categories(){
-		return $this->hasMany('App\Category');
+		return $this->hasMany('App\Model\Category');
     }
     public function news()
 	{	
-	 return $this->hasMany('App\News');
+	 return $this->hasMany('App\Model\News');
     }
     public function likes()
 	{	
@@ -51,10 +54,7 @@ class Admin extends Authenticatable
     public function replies()
 	{	
 	 return $this->hasMany(Reply::class);
-	}
- 
-
-   
+	}  
     
 }
 

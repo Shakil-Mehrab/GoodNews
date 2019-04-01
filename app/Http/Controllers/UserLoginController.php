@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Product;
-use App\Category;
+use App\Model\News;
+use App\Model\Category;
 
 
 
@@ -69,7 +69,7 @@ public function postUpdateUser(Request $request,$id)
             }
         }
         $user->update();
-        return redirect()->route("user.profile")->withMessage("User Updated !");
+        return redirect()->route("user.profile")->withSuccess("User Updated !");
     }
 
 public function getDeleteUser($id)
@@ -77,8 +77,8 @@ public function getDeleteUser($id)
         $user=User::find($id);
         if(Auth::user()->author=='admin' ){
         $user->delete();
-        return back()->withMessage("User Deleted !");
+        return back()->withSuccess("User Deleted !");
         }
-        return redirect()->back()->withMessage("You can't Delete!");
+        return redirect()->back()->withError("You can't Delete!");
     }
 }

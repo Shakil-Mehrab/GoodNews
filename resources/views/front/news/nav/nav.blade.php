@@ -1,4 +1,9 @@
-  	<!-- Header -->
+@php 
+use App\Model\News;
+$interenational_news_nav=News::orderBY('id','desc')->where('category_id',18)->limit(6)->get();
+
+@endphp
+ <!-- Header -->
 <header id="header" class="header" >
 	   	<div class="top-wrap" style="background:#E8280B">
 			<div class="container">
@@ -109,7 +114,15 @@
 						<div class="search-icon"></div><!-- //mobile search button -->
 						<form method="post" action="{{route('search.news')}}" id="searchform" class="search-form"  role="search">
 						{{csrf_field()}}
-							<input type="text" id="s" placeholder="Search" name="tag" class="search-field" value="{{Request::old('tag')}}">
+							<div class="form-group{{ $errors->has('tag') ? ' has-error' : '' }}">
+					            <input id="tag" type="text" class="form-control" name="tag" placeholder="Search By Heading" value="{{ old('tag') }}" required>
+
+					                @if ($errors->has('tag'))
+					                    <span class="help-block">
+					                        <strong>{{ $errors->first('tag') }}</strong>
+					                    </span>
+					                @endif
+					        </div>
 							<input type="submit" value="&#xf002;" id="searchsubmit" class="search-submit">
 							<a class="search-close" href="#"><i class="fa fa-times-circle"></i>hi</a>
 						</form>

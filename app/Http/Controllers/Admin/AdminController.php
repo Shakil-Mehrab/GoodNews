@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\News;
-use App\Category;
+use App\Model\News;
+use App\Model\Category;
 
 class AdminController extends Controller
 {

@@ -1,7 +1,13 @@
+@php 
+use App\Model\News;
+$healthfitness=News::orderBY('id','desc')->where('category_id',15)->limit(6)->get();   
+ $life_style_news=News::orderBY('id','desc')->where('category_id',16)->limit(6)->get();
+
+@endphp
 <div class="col-md-12">
-					<div class="trending-posts">
-						<div class="gn-line"></div>
-						<div class="section-title">			
+<div class="trending-posts">
+	<div class="gn-line"></div>
+	<div class="section-title">			
    	<header id="header" class="header">
 	   <div class="header-wrap">
 		 <div class="container">
@@ -119,7 +125,10 @@
 				<h3><a href="{{route('new.single',$recreation_new->id)}}">{{$recreation_new->heading}}</a></h3>
 				<span style="text-align:justify"><p class="excerpt-entry">@php echo str_limit($recreation_new->description,200) @endphp<a href="{{route('new.single',$recreation_new->id)}}">Read more</a></p></span>
 
-			@include('front.include.comment.recreation')
+<div class="activity">
+  <span class="views">{{$recreation_new->views()}}</span>
+  <span class="comment"><a>{{$recreation_new->comments()->count()}}</a></span>
+</div>
 			</article><!--  /.post -->
 		</div>
 		@else
@@ -134,7 +143,10 @@
 				<h3><a href="{{route('new.single',$recreation_new->id)}}">{{$recreation_new->heading}}</a></h3>
 				<span style="text-align:justify"><p class="excerpt-entry">@php echo str_limit($recreation_new->description,200) @endphp<a href="{{route('new.single',$recreation_new->id)}}">Read more</a></p></span>
 				
-			@include('front.include.comment.recreation')
+<div class="activity">
+  <span class="views">{{$recreation_new->views()}}</span>
+  <span class="comment"><a>{{$recreation_new->comments()->count()}}</a></span>
+</div>
 			</article><!--  /.post -->
 		</div>
 			@endif

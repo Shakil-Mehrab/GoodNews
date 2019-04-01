@@ -11,35 +11,31 @@
  
  <div class="row">
 	<div class="col-md-9 col-md-offset-1">
-		@include('admin.includes.message')
+		@include('super-admin.includes.message')
 		<div class="text-center"><h3>Add News</h3></div>
 
 			<form method="post" action="{{route('admin-news.store')}}" class="forms-sample" enctype="multipart/form-data"> 
 				{{csrf_field()}}
-		    <div class="form-group">
-				<label for="name">Heading<span style='color:red'>*</span></label>
-				<input type="text" class="form-control p-input" name="heading" placeholder="name" value="{{Request::old('heading')}}"> 
-			</div>
-			<div class="form-group">
-				<label for="name">Description<span style='color:red'>*</span></label>
-				<textarea id="textarea" class="form-control p-input" name="description" rows="10" cols="5" placeholder="Description">{{Request::old('description')}}</textarea> 
-			</div>
-		
-			<div class="form-group">
-				<label for="category_id">Category <span style='color:red'>*</span></label>
-				<select class='form-control' name="category_id" placeholder='Category' value="{{Request::old('category_id')}}">
-					@forelse($categories as $category)
-					<option value="{{$category->id}}">{{$category->name}}</option>
-					@empty
-					<option value="">No Category</option>
-					@endforelse
-				</select>
-				<div class="form-group">
-				<label for="name">Media<span style='color:red'>*</span></label>
-				<input type="text" class="form-control p-input" name="media" placeholder="Media" value="{{Request::old('media')}}"> 
-			</div>
-		
-			</div>
+			<div class="form-group{{ $errors->has('heading') ? ' has-error' : '' }}">
+	            <label for="heading" class="control-label">Heading</label>
+	            <input id="heading" type="text" class="form-control" name="heading" placeholder="Heading" value="{{ old('heading') }}" required>
+
+	                @if ($errors->has('heading'))
+	                    <span class="help-block">
+	                        <strong>{{ $errors->first('heading') }}</strong>
+	                    </span>
+	                @endif
+	        </div>
+			   <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+                <label for="description" class="control-label">Description</label>
+                <textarea id="description" type="text" class="form-control" name="description" col="30" rows="8">{{ old('description') }}</textarea>  
+                @if ($errors->has('description'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('description') }}</strong>
+                        </span>
+                    @endif                      
+            </div>
+            @include('super-admin.news.form.select')
 			<div class="form-group">
 				<label>Upload file<span style='color:red'>*</span></label>
 				<input type="file" class='form-control' class="form-control-file" name='image' id="exampleInputFile2" aria-describedby="fileHelp">

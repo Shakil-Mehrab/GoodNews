@@ -33,6 +33,8 @@
                     <table id="order-listing" class="table table-striped" style="width:100%;">
                       <thead>
                         <tr>
+                            <th> <input type="checkbox" name="check[]" value="">
+                            </th>
                             <th>News #</th>
                             <th>Heading</th>
                             <th>Description</th>
@@ -47,7 +49,10 @@
                       <tbody>
                         @forelse($news as $new)
                         @if(!empty($new->user->id) and !empty($new->category->id))
-                        <tr>
+                        <tr>  
+                            <td>
+                                <input type="checkbox" name="check[]" value="{{$new->id}}">
+                            </td>
                             <td>{{$new->id}}</td>
                             <td>{{$new->heading}}</td>
                             <td>@php echo str_limit($new->description,300) @endphp</td>

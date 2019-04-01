@@ -19,9 +19,8 @@
     </script>
 </head>
 <body>
-   
         @include('admin.includes.nav')
-        <section class="container" style="width:100%">
+        <section class="container">
                 <div class="row">
                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">   
                       <div class="row"> 

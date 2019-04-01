@@ -10,6 +10,7 @@
 @include('front.news.education_news')	
 @include('front.news.recreation_news')
 @include('front.news.finalnews_news')
+
 @endsection
 
 

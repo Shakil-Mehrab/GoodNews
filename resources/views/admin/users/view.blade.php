@@ -33,7 +33,7 @@
                               <th style="width:30%;">{{$user->email}}</th>
                             </tr>
                             <tr>
-                              <th style="width:20%;font-size:16px;color:blue">Password</th>
+                              <th style="width:20%;font-size:16px;color:blue">Authority</th>
                               <th style="width:30%;">{{$user->author}} </th>
                               <th style="width:20%;font-size:16px;color:blue">Password</th>
                               <th style="width:30%;">****** </th>

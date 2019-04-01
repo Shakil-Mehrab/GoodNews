@@ -4,6 +4,12 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Model\Like;
+use App\Model\Comment;
+use App\Model\Reply;
+use App\Model\News;
+
+
 
 class User extends Authenticatable
 {
@@ -28,11 +34,11 @@ class User extends Authenticatable
     ];
     
     public function categories(){
-		return $this->hasMany('App\Category');
+		return $this->hasMany('App\Model\Category');
     }
     public function news()
 	{	
-	 return $this->hasMany('App\News');
+	 return $this->hasMany('App\Model\News');
     }
     public function likes()
 	{	
@@ -46,10 +52,10 @@ class User extends Authenticatable
 	{	
 	 return $this->hasMany(Reply::class);
 	}
+    public function viewedListings(){
+       return $this->belongsToMany(News::class ,'user_news_views')->withTimestamps()->withPivot(['count','id']);
+    } 
  
-
-   
-    
 }
 
 

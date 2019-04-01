@@ -15,18 +15,29 @@
 		@include('admin.includes.message')
 		<div class="text-center"><h3>Add News</h3></div>
 
-			<form method="post" action="{{route('news.store')}}" class="forms-sample" enctype="multipart/form-data"> 
+		<form method="post" action="{{route('news.store')}}" class="forms-sample" enctype="multipart/form-data"> 
 				{{csrf_field()}}
-		    <div class="form-group">
-				<label for="name">Heading<span style='color:red'>*</span></label>
-				<input type="text" class="form-control p-input" name="heading" placeholder="name" value="{{Request::old('heading')}}"> 
-			</div>
-			<div class="form-group">
+	    <div class="form-group{{ $errors->has('heading') ? ' has-error' : '' }}">
+            <label for="heading" class="control-label">Title</label>
+            <input id="heading" type="text" class="form-control" name="heading" placeholder="Heading" value="{{ old('heading') }}">
+
+                @if ($errors->has('heading'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('heading') }}</strong>
+                    </span>
+                @endif
+        </div>
+			<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
 				<label for="name">Description<span style='color:red'>*</span></label>
 				<textarea id="textarea" class="form-control p-input" name="description" rows="10" cols="5" placeholder="Description">{{Request::old('description')}}</textarea> 
+				 @if ($errors->has('title'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('title') }}</strong>
+                    </span>
+                @endif
 			</div>
 		
-			<div class="form-group">
+			<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
 				<label for="category_id">Category <span style='color:red'>*</span></label>
 				<select class='form-control' name="category_id" placeholder='Category' value="{{Request::old('category_id')}}">
 					@forelse($categories as $category)

@@ -28,7 +28,7 @@
                             <th>Product #</th>
                             <th>Name</th>
                             <th>Image</th>
-                            <th>Edit</th>
+                            <th>Authority</th>
                             <th>View</th>
                             <th>Delete</th>
                             

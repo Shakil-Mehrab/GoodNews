@@ -11,6 +11,7 @@
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<meta name="author" content="">
+
 	<link href="{{asset('style/front/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('style/front-style.css')}}" rel="stylesheet">
 	
@@ -42,12 +43,23 @@
 		<script src="javascript/html5shiv.js"></script>
 		<script src="javascript/respond.min.js"></script>
 	<![endif]-->
-    @yield('flink')
+    @yield('link')
+ {{-- <script src="{{ asset('js/app.js') }}" defer></script>
+    <script>
+        window.Laravel={!! json_encode([
+            "csrfToken"=>csrf_token(),
+         ]) !!};
+    </script> --}}
 </head>
 <body>
 @include('front.news.nav.nav')	
 	<!-- Main -->
 	<!-- Main -->
+	  <div id="app">
+        <div class="container">
+           @include('front.include.algolia.search')
+        </div>
+    </div>  
 	<section id="main">
 		<div class="container">
 			<div class="row">	

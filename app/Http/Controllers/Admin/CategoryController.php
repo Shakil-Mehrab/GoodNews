@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Category;
-use App\News;
-
+use App\Model\Category;
+use App\Model\News;
+use App\Http\Requests\StoreCategotyRequest;
 
 class CategoryController extends Controller
 {
@@ -40,11 +40,8 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCategotyRequest $request)
     {
-        $this->validate($request,[
-			"name"=>"required",
-         ]);
         Category::create($request->all());
         return redirect()->back()->withMessage("Category Created !");
     }
@@ -85,11 +82,8 @@ class CategoryController extends Controller
     {
 
     }
-    public function postUpdateCategory(Request $request, $id)
+    public function postUpdateCategory(StoreCategotyRequest $request, $id)
     {
-        $this->validate($request,[
-			"name"=>"required",
-         ]);
         $category=Category::find($id);
         $category->name=$request['name']; 
         if(Auth::guard('admin')){

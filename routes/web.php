@@ -10,90 +10,45 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/','FrontController@welcome');
+Route::get('/','layout\FrontController@welcome');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('users/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 
 
 Route::prefix('admin')->group(function(){
-Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-Route::get('/', 'Admin\AdminController@index')->name('admin.dashboard');
-Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+    Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+    Route::get('/', 'Admin\AdminController@index')->name('admin.dashboard');
+    Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
-Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
-Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
-Route::get('/password/reset/{token}', 'Auth\AdminResetPasswordController@showResetForm')->name('admin.password.reset');
-Route::post('/password/reset', 'Auth\AdminResetPasswordController@reset')->name('admin.password.update');
+    Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
+    Route::post('/password/email', 'Auth\AdminForgotPasswordController@sendResetLinkEmail')->name('admin.password.email');
+    Route::get('/password/reset/{token}', 'Auth\AdminResetPasswordController@showResetForm')->name('admin.password.reset');
+    Route::post('/password/reset', 'Auth\AdminResetPasswordController@reset')->name('admin.password.update');
 });
 
 Route::group(['prefix'=>'super-admin','middleware'=>['admin']],function(){
     //News
     Route::resource('/admin-news','Admin\NewsController');
     Route::resource('/admin-categories','Admin\CategoryController');
-    Route::post('/update-product/{product_id}',[
-        'uses'=>'Admin\NewsController@postUpdateProduct',
-        'as'=>'admin-news.update',
-        ]);  
-    Route::get('/delete-product/{product_id}',[
-        'uses'=>'Admin\NewsController@getDeleteProduct',
-        'as'=>'admin-news.delete',
-        ]);
+    Route::post('/update-product/{product_id}','Admin\NewsController@postUpdateProduct')->name('admin-news.update');  
+    Route::get('/delete-product/{product_id}','Admin\NewsController@getDeleteProduct')->name('admin-news.delete');
     //User
-    Route::get('/user-profile',[
-        'uses'=>'Admin\UserLoginController@getUserProfile',
-        'as'=>'admin-user.profile',
-        ]); 
-        Route::get('/edit-user-account/{user_id}',[
-            'uses'=>'Admin\UserLoginController@getEditUserAccount',
-            'as'=>'admin-account.edit',
-            ]); 
-            Route::post('/update-user-account/{user_id}',[
-                'uses'=>'Admin\UserLoginController@postUpdateUserAccount',
-                'as'=>'admin-account.update',
-                ]);     
-    Route::get('/edit-user/{user_id}',[
-        'uses'=>'Admin\UserLoginController@getEditUser',
-        'as'=>'admin-user.edit',
-        ]); 
-    Route::post('/update-user/{user_id}',[
-        'uses'=>'Admin\UserLoginController@postUpdateUser',
-        'as'=>'admin-user.update',
-        ]);
-    Route::get('/users',[
-        'uses'=>'Admin\UserLoginController@getUsers',
-        'as'=>'admin-users',
-        ]);  
-    Route::get('/view-user/{user_id}',[
-        'uses'=>'Admin\UserLoginController@getViewUser',
-        'as'=>'admin-user.show',
-        ]); 
-    Route::get('/change-to-author/{user_id}',[
-        'uses'=>'Admin\UserLoginController@getChangeToAuthor',
-        'as'=>'admin-change-to-author',
-        ]);
-    Route::get('/change-to-admin/{user_id}',[
-        'uses'=>'Admin\UserLoginController@getChangeToAdmin',
-        'as'=>'author-change-to-admin',
-        ]);
-    Route::get('/delete-user/{user_id}',[
-        'uses'=>'Admin\UserLoginController@getDeleteUser',
-        'as'=>'admin-user.destroy',
-        ]);
+    Route::get('/user-profile','Admin\UserLoginController@getUserProfile')->name('admin-user.profile'); 
+    Route::get('/edit-user-account/{user_id}','Admin\UserLoginController@getEditUserAccount')->name('admin-account.edit'); 
+    Route::post('/update-user-account/{user_id}','Admin\UserLoginController@postUpdateUserAccount')->name('admin-account.update');     
+    Route::get('/edit-user/{user_id}','Admin\UserLoginController@getEditUser')->name('admin-user.edit'); 
+    Route::post('/update-user/{user_id}','Admin\UserLoginController@postUpdateUser')->name('admin-user.update');
+    Route::get('/users','Admin\UserLoginController@getUsers')->name('admin-users');  
+    Route::get('/view-user/{user_id}','Admin\UserLoginController@getViewUser')->name('admin-user.show'); 
+    Route::get('/change-to-author/{user_id}','Admin\UserLoginController@getChangeToAuthor')->name('admin-change-to-author');
+    Route::get('/change-to-admin/{user_id}','Admin\UserLoginController@getChangeToAdmin')->name('author-change-to-admin');
+    Route::get('/delete-user/{user_id}','Admin\UserLoginController@getDeleteUser')->name('admin-user.destroy');
     //Category
-    Route::post('/toggle-categories/{categories_id}',[
-        'uses'=>'Admin\CategoryController@toggleCategories',
-        'as'=>'toggle.categories'
-        ]);	
-    Route::get('/category-delete/{category_id}',[
-        'uses'=>'Admin\CategoryController@getDeleteCategory',
-        'as'=>'admin-category.delete'
-        ]);	
-    Route::post('/category-update/{category_id}',[
-        'uses'=>'Admin\CategoryController@postUpdateCategory',
-        'as'=>'admin-category.update'
-        ]);
+    Route::post('/toggle-categories/{categories_id}','Admin\CategoryController@toggleCategories')->name('toggle.categories');	
+    Route::get('/category-delete/{category_id}','Admin\CategoryController@getDeleteCategory')->name('admin-category.delete');	
+    Route::post('/category-update/{category_id}','Admin\CategoryController@postUpdateCategory')->name('admin-category.update');
     
     Route::get('/test', function() {
         $notifications=auth()->user()->unreadNotifications;
@@ -102,247 +57,87 @@ Route::group(['prefix'=>'super-admin','middleware'=>['admin']],function(){
         } 
         });   
     //comment
-    Route::get('/comment-index',[
-        'uses'=>'Admin\ActionController@getComments',
-        'as'=>'admin-comment.index'
-        ]); 	   
-    Route::post('/comment-save/{comment_id}',[
-        'uses'=>'Admin\ActionController@postSaveComment',
-        'as'=>'comment.store'
-        ]);
-    Route::get('/comment-page/{news_id}',[
-        'uses'=>'Admin\ActionController@getshowFrontComment',
-        'as'=>'comment.show'
-        ]);   
-    Route::get('/comment-edit/{comment_id}',[
-        'uses'=>'Admin\ActionController@getEditComment',
-        'as'=>'admin-comment.edit'
-        ]);
-    Route::post('/comment-update/{comment_id}',[
-        'uses'=>'Admin\ActionController@postUpdateComment',
-        'as'=>'admin-comment.update'
-        ]);
-    Route::get('/comment-delete/{comment_id}',[
-        'uses'=>'Admin\ActionController@getCommentDelete',
-        'as'=>'admin-comment.delete'
-        ]);	
-      
-            
+    Route::get('/comment-index','Admin\ActionController@getComments')->name('admin-comment.index'); 	   
+    Route::post('/comment-save/{comment_id}','Admin\ActionController@postSaveComment')->name('comment.store');
+    Route::get('/comment-page/{news_id}','Admin\ActionController@getshowFrontComment')->name('comment.show');   
+    Route::get('/comment-edit/{comment_id}','Admin\ActionController@getEditComment')->name('admin-comment.edit');
+    Route::post('/comment-update/{comment_id}','Admin\ActionController@postUpdateComment')->name('admin-comment.update');
+    Route::get('/comment-delete/{comment_id}','Admin\ActionController@getCommentDelete')->name('admin-comment.delete');	
+           
     });
 
-    
-    
 
-
-Route::get('signin-page',[
-    'uses'=>'UserLoginController@getSignInPage',
-    'as'=>'signin-page',
-    ]); 
-Route::get('signin',[
-    'uses'=>'UserLoginController@getLogin',
-    'as'=>'signin',
-    ]); 
-Route::get('signup-page',[
-    'uses'=>'UserLoginController@getSignUpPage',
-    'as'=>'signup-page',
-    ]);   
-Route::get('signup',[
-    'uses'=>'UserLoginController@getSignup',
-    'as'=>'signup',
-    ]); 
-Route::post('search',[
-    'uses'=>'FrontController@postSerchNews',
-    'as'=>'search.news',
-    ]);
+Route::get('signin-page','UserLoginController@getSignInPage')->name('signin-page');
+Route::get('signin','UserLoginController@getLogin')->name('signin');
+Route::get('signup-page','UserLoginController@getSignUpPage')->name('signup-page');   
+Route::get('signup','UserLoginController@getSignup')->name('signup'); 
 
 Route::group(['prefix'=>'user','middleware'=>['auth']],function(){
-Route::get('/', 'HomeController@index')->name('dashboard');
-//News
-Route::resource('/news','NewsController');
-Route::resource('/categories','CategoryController');
+    Route::get('/', 'HomeController@index')->name('dashboard');
+    //News
+    Route::resource('/news','Layouts\NewsController');
+    Route::resource('/categories','Layouts\CategoryController');
+    Route::post('/update-product/{product_id}','Layouts\NewsController@postUpdateProduct')->name('news.update');  
+    Route::get('/delete-product/{product_id}','Layouts\NewsController@getDeleteProduct')->name('news.delete');
+    Route::get('/share/{news_id}','Layouts\NewsShareController@index')->name('news.share.index');
+    Route::post('/store-share/{news_id}','Layouts\NewsShareController@store')->name('news.share.store');
 
-
-Route::post('/update-product/{product_id}',[
-    'uses'=>'NewsController@postUpdateProduct',
-    'as'=>'news.update',
-    ]);  
-Route::get('/delete-product/{product_id}',[
-    'uses'=>'NewsController@getDeleteProduct',
-    'as'=>'news.delete',
-    ]);
-//User
-Route::get('/user-profile',[
-    'uses'=>'UserLoginController@getUserProfile',
-    'as'=>'user.profile',
-    ]); 
-Route::get('/edit-user/{user_id}',[
-    'uses'=>'UserLoginController@getEditUser',
-    'as'=>'user.edit',
-    ]); 
-Route::post('/update-user/{user_id}',[
-    'uses'=>'UserLoginController@postUpdateUser',
-    'as'=>'user.update',
-    ]);
-Route::get('/users',[
-    'uses'=>'UserLoginController@getUsers',
-    'as'=>'users',
-    ]);  
-Route::get('/view-user/{user_id}',[
-    'uses'=>'UserLoginController@getViewUser',
-    'as'=>'user.show',
-    ]); 
-Route::get('/delete-user/{user_id}',[
-    'uses'=>'UserLoginController@getDeleteUser',
-    'as'=>'user.destroy',
-    ]);
-//Category
-Route::post('/toggle-categories/{categories_id}',[
-    'uses'=>'CategoryController@toggleCategories',
-    'as'=>'toggle.categories'
-    ]);	
-Route::get('/category-delete/{category_id}',[
-    'uses'=>'CategoryController@getDeleteCategory',
-    'as'=>'category.delete'
-    ]);	
-Route::post('/category-update/{category_id}',[
-    'uses'=>'CategoryController@postUpdateCategory',
-    'as'=>'category.update'
-    ]);
-
-Route::get('/test', function() {
-    $notifications=auth()->user()->unreadNotifications;
-    foreach($notifications as $notification){
-        dd($notification->data['user']['name']);
-    } 
-    });   
-//comment
-Route::get('/comment-index',[
-    'uses'=>'ActionController@getComments',
-    'as'=>'comment.index'
-    ]); 	   
-Route::post('/comment-save/{comment_id}',[
-    'uses'=>'ActionController@postSaveComment',
-    'as'=>'comment.store'
-    ]);
-Route::get('/comment-page/{news_id}',[
-    'uses'=>'ActionController@getshowFrontComment',
-    'as'=>'comment.show'
-    ]);   
-Route::get('/comment-edit/{comment_id}',[
-    'uses'=>'ActionController@getEditComment',
-    'as'=>'comment.edit'
-    ]);
-Route::post('/comment-update/{comment_id}',[
-    'uses'=>'ActionController@postUpdateComment',
-    'as'=>'comment.update'
-    ]);
-Route::get('/comment-delete/{comment_id}',[
-    'uses'=>'ActionController@getCommentDelete',
-    'as'=>'comment.delete'
-    ]);	
-  
+    //User
+    Route::get('/user-profile','UserLoginController@getUserProfile')->name('user.profile'); 
+    Route::get('/edit-user/{user_id}','UserLoginController@getEditUser')->name('user.edit'); 
+    Route::post('/update-user/{user_id}','UserLoginController@postUpdateUser')->name('user.update');
+    Route::get('/users','UserLoginController@getUsers')->name('users');  
+    Route::get('/view-user/{user_id}','UserLoginController@getViewUser')->name('user.show'); 
+    Route::get('/delete-user/{user_id}','UserLoginController@getDeleteUser')->name('user.destroy');
+    //Category
+    Route::post('/toggle-categories/{categories_id}','CategoryController@toggleCategories')->name('toggle.categories');	
+    Route::get('/category-delete/{category_id}','Layouts\CategoryController@getDeleteCategory')->name('category.delete');	
+    Route::post('/category-update/{category_id}','Layouts\CategoryController@postUpdateCategory')->name('category.update');
+    Route::get('/test', function() {
+        $notifications=auth()->user()->unreadNotifications;
+        foreach($notifications as $notification){
+            dd($notification->data['user']['name']);
+        } 
+        });   
+    //comment
+    Route::get('/comment-index','Layouts\ActionController@getComments')->name('comment.index'); 	   
+    Route::post('/comment-save/{news_id}','Layouts\ActionController@postSaveComment')->name('comment.store');
+    Route::get('/comment-page/{news_id}','Layouts\ActionController@getshowFrontComment')->name('comment.show');   
+    Route::get('/comment-edit/{comment_id}','Layouts\ActionController@getEditComment')->name('comment.edit');
+    Route::post('/comment-update/{comment_id}','Layouts\ActionController@postUpdateComment')->name('comment.update');
+    Route::get('/comment-delete/{comment_id}','Layouts\ActionController@getCommentDelete')->name('comment.delete');	
+    //Reply
+     //comment
+    Route::get('/reply-index','Layouts\ReplyController@getComments')->name('reply.index');        
+    Route::post('/reply-save/{comment_id}','Layouts\ReplyController@postSaveReply')->name('reply.store');
+    Route::get('/reply-page/{news_id}','Layouts\ReplyController@getshowFrontComment')->name('reply.show');   
+    Route::get('/reply-edit/{comment_id}','Layouts\ReplyController@getEditComment')->name('reply.edit');
+    Route::post('/reply-update/{comment_id}','Layouts\ReplyController@postUpdateComment')->name('reply.update');
+    Route::get('/reply-delete/{comment_id}','Layouts\ReplyController@getCommentDelete')->name('reply.delete'); 
         
 });
-//news
-//top
-Route::get('/top-news',[
-    'uses'=>'FrontController@getToplNews',
-    'as'=>'top.index'
-    ]);
-    //latest
-Route::get('/latest-news',[
-    'uses'=>'FrontController@getLatestNews',
-    'as'=>'latest.index'
-    ]);
- //national      
-Route::get('/national-news',[
-    'uses'=>'FrontController@getNationalNews',
-    'as'=>'national.index'
-    ]);
- //international     
-Route::get('/international-news',[
-    'uses'=>'FrontController@getInternationalNews',
-    'as'=>'international.index'
-    ]);
- //science        
-Route::get('/science-news',[
-    'uses'=>'FrontController@getScienceNews',
-    'as'=>'science.index'
-    ]);
-  //sports 
-  Route::get('/latestsports-news',[
-    'uses'=>'FrontController@getLatestsportsNews',
-    'as'=>'latestsports.index'
-    ]);        
-Route::get('/sports-news',[
-    'uses'=>'FrontController@getSportsNews',
-    'as'=>'sports.index'
-    ]);
-  //politics         
-Route::get('/politics-news',[
-    'uses'=>'FrontController@getPoliticsNews',
-    'as'=>'politics.index'
-    ]); 
-Route::get('/district-news',[
-    'uses'=>'FrontController@getDistrictNews',
-    'as'=>'district.index'
-    ]);
- //education     
-Route::get('/education-news',[
-    'uses'=>'FrontController@getEducationNews',
-    'as'=>'education.index'
-    ]);
-Route::get('/campus-news',[
-    'uses'=>'FrontController@getCampusNews',
-    'as'=>'campus.index'
-    ]);      
-Route::get('/economics-news',[
-    'uses'=>'FrontController@getEconomicsNews',
-    'as'=>'economics.index'
-    ]);  
-Route::get('/literature-news',[
-    'uses'=>'FrontController@getLiteratureNews',
-    'as'=>'literature.index'
-    ]);      
-  //recreation    
-Route::get('/recreation-news',[
-    'uses'=>'FrontController@getRecreationNews',
-    'as'=>'recreation.index'
-    ]); 
-Route::get('/bandmusic-news',[
-    'uses'=>'FrontController@geBandmusictNews',
-    'as'=>'bandmusic.index'
-    ]); 
-Route::get('/healthfitnes-news',[
-    'uses'=>'FrontController@getHealthfitnesNews',
-    'as'=>'healthfitnes.index'
-    ]);
-Route::get('/lifestyle-news',[
-    'uses'=>'FrontController@getLifestyleNews',
-    'as'=>'lifestyle.index'
-    ]);  
-  //final 
-Route::get('/final-news',[
-    'uses'=>'FrontController@getFinalNews',
-    'as'=>'final.index'
-    ]);
-    // sgl
-Route::get('/single-news/{new_id}',[
-    'uses'=>'FrontController@getSingleNews',
-    'as'=>'new.single'
-    ]); 
- //sidebar   
- Route::get('/bussiness-news',[
-    'uses'=>'NewsController@getBussinessNews',
-    'as'=>'bussiness.index'
-    ]);
-Route::get('/holiday-news',[
-    'uses'=>'NewsController@getHolidayNews',
-    'as'=>'holiday.index'
-    ]);   
-Route::post('/subcriber',[
-    'uses'=>'FrontController@postSaveSubscriber',
-    'as'=>'subscribe.save'
-    ]);   
-    
+//single news
+Route::get('/top-news','Layout\Single\TopNewsController@getToplNews')->name('top.index');
+Route::get('/latest-news','Layout\Single\LatestNewsController@getLatestNews')->name('latest.index');     
+Route::get('/national-news','Layout\Single\NationalNewsController@getNationalNews')->name('national.index');    
+Route::get('/international-news','Layout\Single\InternationalNewsController@getInternationalNews')->name('international.index');     
+Route::get('/science-news','Layout\Single\ScienceNewsController@getScienceNews')->name('science.index');
+Route::get('/latestsports-news','Layout\Single\SportsNewsController@getLatestsportsNews')->name('latestsports.index');        
+Route::get('/sports-news','Layout\Single\SportsNewsController@getSportsNews')->name('sports.index');        
+Route::get('/politics-news','Layout\Single\PoliticsNewsController@getPoliticsNews')->name('politics.index'); 
+Route::get('/district-news','Layout\Single\DistrictNewsController@getDistrictNews')->name('district.index'); 
+Route::get('/education-news','Layout\Single\EducationNewsController@getEducationNews')->name('education.index');
+Route::get('/campus-news','Layout\Single\CampusNewsController@getCampusNews')->name('campus.index');      
+Route::get('/economics-news','Layout\Single\EconomicsNewsController@getEconomicsNews')->name('economics.index');  
+Route::get('/literature-news','Layout\Single\LiteratureNewsController@getLiteratureNews')->name('literature.index');         
+Route::get('/recreation-news','Layout\Single\RecreationNewsController@getRecreationNews')->name('recreation.index'); 
+Route::get('/bandmusic-news','Layout\Single\BandMusicNewsController@geBandmusictNews')->name('bandmusic.index'); 
+Route::get('/healthfitnes-news','Layout\Single\HealthFitnessNewsController@getHealthfitnesNews')->name('healthfitnes.index');
+Route::get('/lifestyle-news','Layout\Single\LifestyleNewsController@getLifestyleNews')->name('lifestyle.index');  
+Route::get('/final-news','Layout\Single\FinalNewsController@getFinalNews')->name('final.index');
+Route::get('/single-news/{new_id}','Layout\FrontController@getSingleNews')->name('new.single'); 
+Route::get('/bussiness-news','Layout\NewsController@getBussinessNews')->name('bussiness.index');
+Route::get('/holiday-news','Layout\NewsController@getHolidayNews')->name('holiday.index');   
+Route::post('/subcriber','Layout\Single\SubscriberNewsController@postSaveSubscriber')->name('subscribe.save');   
+Route::post('/search','Layout\SearchController@postSerchNews')->name('search.news');     
  

@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\News;
-use App\Comment;
-use App\Reply;
-use App\Category;
+use App\Model\News;
+use App\Model\Comment;
+use App\Model\Reply;
+use App\Model\Category;
 use App\Notifications\RepliedToProduct;
 
 
@@ -60,9 +60,9 @@ class ActionController extends Controller
         $comment=Comment::find($id);
         if(Auth::guard('admin')){
         $comment->delete();
-        return back()->withMessage('Comment Deleted!');
+        return back()->withSuccess('Comment Deleted!');
         }
-        return back()->withMessage("You can't Delete");
+        return back()->withError("You can't Delete");
     }
     public function getEditComment($id)
     {

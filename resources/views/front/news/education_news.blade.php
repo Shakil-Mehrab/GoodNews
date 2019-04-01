@@ -1,4 +1,8 @@
-
+@php 
+use App\Model\News;
+$art_literatures=News::orderBY('id','desc')->where('category_id',12)->limit(6)->get();    
+$economics=News::orderBY('id','desc')->where('category_id',11)->limit(6)->get();  
+@endphp
 <div class="col-md-12">
   <div class="trending-posts">
 	<div class="gn-line"></div>
@@ -121,7 +125,10 @@
 				<h3><a href="{{route('new.single',$education_new->id)}}">{{$education_new->heading}}</a></h3>
 				<span style="text-align:justify"><p class="excerpt-entry">@php echo str_limit($education_new->description,200) @endphp<a href="{{route('new.single',$education_new->id)}}">Read more</a></p></span>
 
-			@include('front.include.comment.education')
+<div class="activity">
+  <span class="views">{{$education_new->views()}}</span>
+  <span class="comment"><a>{{$education_new->comments()->count()}}</a></span>
+</div>
 
 			</article><!--  /.post -->
 		</div>
@@ -138,7 +145,10 @@
 				<h3><a href="{{route('new.single',$education_new->id)}}">{{$education_new->heading}}</a></h3>
 				<span style="text-align:justify"><p class="excerpt-entry">@php echo str_limit($education_new->description,200) @endphp<a href="{{route('new.single',$education_new->id)}}">Read more</a></p></span>
 
-			@include('front.include.comment.education')
+<div class="activity">
+  <span class="views">{{$education_new->views()}}</span>
+  <span class="comment"><a>{{$education_new->comments()->count()}}</a></span>
+</div>
 
 			</article><!--  /.post -->
 		</div>

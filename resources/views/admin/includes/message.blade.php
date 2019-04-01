@@ -1,18 +1,10 @@
-
-
-<div class="message">
-@if(count($errors)>0)
-<div class="alert alert-danger">
-    <ul>
-        @foreach($errors->all() as $error)
-        <li>{{$error}}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-@if(session('message'))
+@if(session('success'))
 <div class="alert alert-success">
-    {{session('message')}}
-</div>  
-@endif
+	{{session('success')}}
 </div>
+@endif
+@if(session('error'))
+<div class="alert alert-danger">
+	{{session('error')}}
+</div>
+@endif

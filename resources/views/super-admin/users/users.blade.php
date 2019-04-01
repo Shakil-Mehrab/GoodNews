@@ -25,11 +25,11 @@
                     <table id="order-listing" class="table table-striped" style="width:100%;">
                       <thead>
                         <tr>
-                            <th>Product #</th>
+                            <th>News #</th>
                             <th>Name</th>
                             <th>Image</th>
                             <th>Edit</th>
-                            @if(Auth::guest('admin'))
+                            @if(Auth::guard('admin'))
                             <th>View</th>
                             <th>Delete</th>
                          @endif                            

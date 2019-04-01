@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\News;
-use App\Category;
+use App\Model\News;
+use App\Model\Category;
 
 class HomeController extends Controller
 {

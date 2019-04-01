@@ -7,11 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Product;
-use App\Category;
+use App\Model\Product;
+use App\Model\Category;
 use App\Admin;
-
-
 
 
 class UserLoginController extends Controller

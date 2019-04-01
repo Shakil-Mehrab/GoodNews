@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewPostNotify;
-
-use App\Category;
-use App\News;
-use App\Comment;
-use App\Subscriber;
+use App\Http\Requests\StoreNewsRequest;
+use App\Model\Category;
+use App\Model\News;
+use App\Model\Comment;
+use App\Model\Subscriber;
 
 class NewsController extends Controller
 {
@@ -42,7 +42,6 @@ class NewsController extends Controller
     {    
         $categories=Category::all();
         return view('super-admin.news.create',compact('categories'));
-        
     }
 
     /**
@@ -51,23 +50,15 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request)
     {
-        $this->validate($request,[
-            "heading"=>"required|max:100",           
-			"description"=>"required|min:3",
-            "category_id"=>"required|integer",   
-            "media"=>"required",           
-                     
-         ]);
+    
          $subscribers= Subscriber::all();
-       
          $product=new News();
          $product->heading=$request['heading'];        
          $product->description=$request['description'];
          $product->category_id=$request['category_id']; 
          $product->media=$request['media'];                                     
-         
          $image=$request->file("image");
          if($image){
             $image_full_name=$image->getClientOriginalName();
@@ -76,16 +67,13 @@ class NewsController extends Controller
              $success=$image->move($upload_path,$image_full_name);
             if($success){
               $product->image=$image_url;
-              $request->user()->news()->save($product);
             }
         }
         $request->user()->news()->save($product);
-
         foreach($subscribers as $subscriber){
             Notification::route('mail', $subscriber->email)->notify(new  NewPostNotify($product));
-
         }
-        return redirect()->route('admin-news.index')->withMessage("News Created !");
+        return redirect()->back()->withSuccess("News Created !");
     }
 
     /**
@@ -111,9 +99,9 @@ class NewsController extends Controller
     {
         $new=News::find($id);
         if(Auth::guard('admin')){
-        return view('super-admin.news.edit',compact('new'));
+        return view('super-admin.news.edit',compact(['new','categories']));
        }
-        return redirect()->back()->withMessage("You can't edit !");
+        return redirect()->back()->withError("You can't edit !");
     
     }
 
@@ -125,15 +113,8 @@ class NewsController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function postUpdateProduct(Request $request, $id)
+    public function postUpdateProduct(StoreNewsRequest $request, $id)
     { 
-        $this->validate($request,[
-            "heading"=>"required|max:100",            
-			"description"=>"required|min:3",
-            "category_id"=>"required",  
-            "media"=>"required",           
-                     
-         ]);
          $product=News::find($id);
          $product->heading=$request['heading'];        
          $product->description=$request['description'];
@@ -153,9 +134,9 @@ class NewsController extends Controller
         if(Auth::guard('admin')){           
             $product->update();
             $products=News::all();
-            return redirect()->route('admin-news.index')->withMessage("News Udated !");
+            return redirect()->back()->withSuccess("News Udated !");
         }
-            return redirect()->back()->withMessage("You can't edit !");
+            return redirect()->back()->withError("You can't edit !");
     } 
 
     /**
@@ -169,9 +150,9 @@ class NewsController extends Controller
         $product=News::find($id);
         if(Auth::guard('admin')){                  
         $product->delete();
-        return redirect()->route('admin-news.index')->withMessage("News Deleted !");
+        return redirect()->back()->withSuccess("News Deleted !");
     }
-    return redirect()->back()->withMessage("You can't Delete !");
+    return redirect()->back()->withError("You can't Delete !");
   }
   public function getNews()
   { 
